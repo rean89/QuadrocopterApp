@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Quadrocopter App</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="navigation_drawer_title">Quadrocopter App</string>
+    <string name="navigation_drawer_subtitle">Wintersemester 2017/2018</string>
 </resources>
