@@ -35,4 +35,9 @@ public class MotorPinData extends DroneData {
     public int[] getMotorPins() {
         return motorPins;
     }
+
+    @Override
+    public void displayData() {
+
+    }
 }

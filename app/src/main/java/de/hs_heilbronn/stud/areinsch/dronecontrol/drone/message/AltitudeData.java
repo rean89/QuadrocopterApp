@@ -58,4 +58,9 @@ public class AltitudeData extends DroneData {
     public float getVario() {
         return vario;
     }
+
+    @Override
+    public void displayData() {
+
+    }
 }

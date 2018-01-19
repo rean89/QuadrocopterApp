@@ -24,4 +24,6 @@ public abstract class DroneData {
     public int getId(){
         return id;
     }
+
+    public abstract void displayData();
 }

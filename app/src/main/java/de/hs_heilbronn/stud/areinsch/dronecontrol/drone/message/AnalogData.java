@@ -103,4 +103,8 @@ public class AnalogData extends DroneData {
         return amperage;
     }
 
+    @Override
+    public void displayData() {
+
+    }
 }

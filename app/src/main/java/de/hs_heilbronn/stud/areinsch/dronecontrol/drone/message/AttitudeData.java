@@ -58,4 +58,9 @@ public class AttitudeData extends DroneData {
     public float getHeading() {
         return heading;
     }
+
+    @Override
+    public void displayData() {
+
+    }
 }

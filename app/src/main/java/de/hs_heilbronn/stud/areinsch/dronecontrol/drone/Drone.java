@@ -238,9 +238,15 @@ public class Drone implements ConnectionListener {
      */
     @Override
     public void dataReceived(String data) {
+        if(data == null || data.isEmpty()) {
+            Log.d(TAG, "No DATA BITCHES!");
+            return;
+        }
 
         DroneData dataPkg = null;
         String[] pkgParts = data.split(";");
+
+        Log.d(TAG, "Data: " + data + " Package parts:" + pkgParts.toString());
 
         switch(Integer.getInteger(pkgParts[0])) {
             case IDENT:

@@ -130,4 +130,8 @@ public class NavStatusData extends DroneData {
         return navTarBearing;
     }
 
+    @Override
+    public void displayData() {
+
+    }
 }

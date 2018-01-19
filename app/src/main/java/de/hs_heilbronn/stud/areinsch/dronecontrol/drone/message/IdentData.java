@@ -84,4 +84,9 @@ public class IdentData extends DroneData {
     public int getCapability() {
         return capability;
     }
+
+    @Override
+    public void displayData() {
+
+    }
 }

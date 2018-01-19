@@ -82,4 +82,8 @@ public class ImuData extends DroneData {
         return mag;
     }
 
+    @Override
+    public void displayData() {
+
+    }
 }

@@ -148,4 +148,8 @@ public class GpsData extends DroneData {
         return speed;
     }
 
+    @Override
+    public void displayData() {
+
+    }
 }

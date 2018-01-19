@@ -255,4 +255,8 @@ public class MiscData extends DroneData {
         return vBatCrit;
     }
 
+    @Override
+    public void displayData() {
+
+    }
 }

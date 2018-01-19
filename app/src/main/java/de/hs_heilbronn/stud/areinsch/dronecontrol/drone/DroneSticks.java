@@ -125,7 +125,7 @@ public class DroneSticks extends View {
         Log.d(TAG, MeasureSpec.toString(heightMeasureSpec));
 
         int prefWidth = MeasureSpec.getSize(widthMeasureSpec) - getPaddingLeft() - getPaddingRight();
-        int prefHeight = 600 + getPaddingBottom() + getPaddingTop();
+        int prefHeight = 500 + getPaddingBottom() + getPaddingTop();
 
         width = measureDimension(prefWidth ,widthMeasureSpec);
         height = measureDimension(prefHeight, heightMeasureSpec);

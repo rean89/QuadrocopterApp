@@ -125,4 +125,8 @@ public class RcChannelData extends DroneData {
         return roll;
     }
 
+    @Override
+    public void displayData() {
+
+    }
 }

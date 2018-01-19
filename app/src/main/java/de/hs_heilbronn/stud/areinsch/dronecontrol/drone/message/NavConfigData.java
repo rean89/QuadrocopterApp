@@ -156,4 +156,9 @@ public class NavConfigData extends DroneData {
     public int getMaxWP() {
         return maxWP;
     }
+
+    @Override
+    public void displayData() {
+
+    }
 }

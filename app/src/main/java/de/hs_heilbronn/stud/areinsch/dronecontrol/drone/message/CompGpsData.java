@@ -60,4 +60,8 @@ public class CompGpsData extends DroneData {
         return dirHome;
     }
 
+    @Override
+    public void displayData() {
+
+    }
 }

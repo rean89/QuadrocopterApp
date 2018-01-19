@@ -35,4 +35,9 @@ public class RcTuningData extends DroneData {
     public float[] getTuning() {
         return tuning;
     }
+
+    @Override
+    public void displayData() {
+
+    }
 }

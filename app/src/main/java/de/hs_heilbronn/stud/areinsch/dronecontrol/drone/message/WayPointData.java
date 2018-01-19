@@ -139,4 +139,8 @@ public class WayPointData extends DroneData {
         return flag;
     }
 
+    @Override
+    public void displayData() {
+
+    }
 }

@@ -199,5 +199,10 @@ public class StatusData extends DroneData {
     public int getConfigFlags() {
         return configSettingFlags;
     }
+
+    @Override
+    public void displayData() {
+
+    }
 }
 

@@ -39,4 +39,9 @@ public class MotorData extends DroneData {
     public float[] getMotors() {
         return motors;
     }
+
+    @Override
+    public void displayData() {
+        // TODO: display Throttle
+    }
 }
