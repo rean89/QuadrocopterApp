@@ -25,9 +25,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         toggle.syncState()
 
         nav_view.setNavigationItemSelectedListener(this)
-        window.decorView.setBackgroundColor(Color.CYAN)
 
-        window.decorView.setBackgroundColor(Color.BLUE)
+        window.decorView.setBackgroundColor(Color.CYAN)
     }
 
     override fun onBackPressed() {
@@ -41,10 +40,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
 
         when (item.itemId) {
-            R.id.nav_gps_coordinateds_screen -> {
+            R.id.nav_home_screen -> {
 
             }
-            R.id.nav_home_screen -> {
+            R.id.nav_gps_coordinateds_screen -> {
 
             }
             R.id.nav_settings_screen -> {
@@ -66,10 +65,15 @@ class asynkSocketComunication() : AsyncTask<String, Void, String>() {
 
 }
 
+// TODO: Toolbar überarbeiten und wieder Transparent bekommen
+// TODO: Alles an Data festlegen für die Anzeige.
+
 // TODO: MULTIWII Parser
 // TODO: MULTIWII Command file
 // TODO: Create Fields for all Statistic members
-//
+// TODO: Send Data Method
+// TODO: Ask for Telemetrieupdate
+// TODO: Consume video Feed
 
 
 // TODO: Implement more Members to display all Data needed!

@@ -8,6 +8,7 @@
     android:paddingEnd="@dimen/activity_horizontal_spacing"
     android:paddingStart="@dimen/activity_vertical_spacing"
     android:paddingTop="@dimen/activity_horizontal_spacing"
+    android:fitsSystemWindows="true"
     android:background="@color/colorPrimary">
 
     <TextView
