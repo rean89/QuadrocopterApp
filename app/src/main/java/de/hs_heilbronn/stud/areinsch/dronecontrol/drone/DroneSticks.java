@@ -219,77 +219,31 @@ public class DroneSticks extends View {
         switch(event.getActionMasked()) {
             case MotionEvent.ACTION_DOWN:
             case MotionEvent.ACTION_POINTER_DOWN:
-                for (int finger = 0; finger < fingerCount; finger++) {
-                    float fingerY = event.getY(finger);
-                    float fingerX = event.getX(finger);
-                    for (int stick = 0; stick < 2; stick++) {
-                        double x = Math.abs(fingerX - centerX[stick]);
-                        double y = Math.abs(fingerY - centerY);
-                        if (x + y <= stickRadius) {
-                            pressed[stick] = true;
-                            stickFingerId[stick] = finger;
-                            inputX[stick] = fingerX;
-                            inputY[stick] = fingerY;
-                        }
-                    }
-                }
-                break;
             case MotionEvent.ACTION_MOVE:
                 for (int finger = 0; finger < fingerCount; finger++) {
-                    float fingerY = event.getY(finger);
-                    float fingerX = event.getX(finger);
                     for (int stick = 0; stick < 2; stick++) {
-                        double x = Math.abs(fingerX - centerX[stick]);
-                        double y = Math.abs(fingerY - centerY);
-                        if (pressed[stick] && stickFingerId[stick] == finger) {
-                            if (x + y <= stickRadius) {
-                                stickFingerId[stick] = finger;
-                                inputX[stick] = fingerX;
-                                inputY[stick] = fingerY;
-                                //Log.d(TAG, "Pressed stick:" + stick);
-                                break;
-                            } else {
-                                double ratio = stickRadius / (x + y);
-                                stickFingerId[stick] = finger;
-                                inputX[stick] = (float) (centerX[stick] + (fingerX - centerX[stick]) * ratio);
-                                inputY[stick] = (float) (centerY + (fingerY - centerY) * ratio);
-                                //Log.d(TAG, "Pressed stick out:" + stick);
-                                break;
-                            }
-                        }
-
+                        updateStick(event.getX(finger), event.getY(finger), finger, stick);
                     }
                 }
                 break;
-            // Reset sticks.
-            case MotionEvent.ACTION_UP:
-                //Log.d(TAG,"Reset sticks.");
-                for(int i = 0; i < 2; i ++) {
-                    resetStick(i);
-                }
-                break;
+            
             // One of two fingers released.
-            // Reset the released finger and update the other one.
+            // Reset one stick and update the other one.
             case MotionEvent.ACTION_POINTER_UP:
-                //Log.d(TAG, "P_UP: " + event.getActionIndex());
                 for (int i = 0; i < 2; i++) {
                     if (stickFingerId[i] == event.getActionIndex()) {
-                        // Reset stick.
                         resetStick(i);
-                        //Log.d(TAG, "Release stick: " + i);
                     } else {
-                        // Update stick.
-                        float fingerY = event.getY(stickFingerId[i]);
-                        float fingerX = event.getX(stickFingerId[i]);
-                        double x = Math.abs(fingerX - centerX[i]);
-                        double y = Math.abs(fingerY - centerY);
-                        if (x + y <= stickRadius) {
-                            pressed[i] = true;
-                            inputX[i] = fingerX;
-                            inputY[i] = fingerY;
-                            //Log.d(TAG, "Pressed stick:" + i);
-                        }
+                        updateStick(event.getX(stickFingerId[i]), event.getY(stickFingerId[i]),
+                                stickFingerId[i], i);
                     }
+                }
+                break;
+
+            // All sticks released. Reset the sticks.
+            case MotionEvent.ACTION_UP:
+                for(int i = 0; i < 2; i ++) {
+                    resetStick(i);
                 }
                 break;
             default:
@@ -331,6 +285,22 @@ public class DroneSticks extends View {
             pressed[stickId] = false;
             inputY[stickId] = defaultY[stickId];
             inputX[stickId] = centerX[stickId];
+    }
+
+    private void updateStick(float touchX, float touchY, int fingerId, int stickId) {
+        double centerDistance = Math.abs(touchX - centerX[stickId]) + Math.abs(touchY - centerY);
+
+        if (centerDistance <= stickRadius) {
+            pressed[stickId] = true;
+            stickFingerId[stickId] = fingerId;
+            inputX[stickId] = touchX;
+            inputY[stickId] = touchY;
+        } else if (pressed[stickId] && stickFingerId[stickId] == fingerId) {
+            double ratio = stickRadius / (centerDistance);
+            stickFingerId[stickId] = fingerId;
+            inputX[stickId] = (float) (centerX[stickId] + (touchX - centerX[stickId]) * ratio);
+            inputY[stickId] = (float) (centerY + (touchY - centerY) * ratio);
+        }
     }
 
     public void setDrone(Drone drone) {
