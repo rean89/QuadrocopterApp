@@ -17,8 +17,14 @@ import android.view.View;
 
 public class DroneSticks extends View {
 
+    /**
+     * Logcat tag.
+     */
     private static final String TAG = "MY_STICKS";
 
+    /**
+     * Drone to send the rc data.
+     */
     private Drone drone;
 
     /**
@@ -39,30 +45,42 @@ public class DroneSticks extends View {
     /**
      * Y coordinate of the control sticks in the view.
      */
-    private int sticksY;
+    private int centerY;
 
     /**
      * X coordinate of the control sticks in the view. Left, then right.
      */
-    private int[] sticksX;
+    private int[] centerX;
 
-    private float[] stickInputX;
+    /**
+     * X axis input of the  sticks.
+     */
+    private float[] inputX;
 
-    private float[] stickInputY;
+    /**
+     * Y axis input of the sticks.
+     */
+    private float[] inputY;
 
-    private int[] stickFinger;
+    /**
+     * FingerId for each stick.
+     */
+    private int[] stickFingerId;
 
     /**
      * User input on the sticks?
      */
-    private boolean[] stickPressed;
+    private boolean[] pressed;
 
     /**
      * Style of the stick background.
      */
     private Paint stickBGStyle;
 
-    private Paint stickBorderStyle;
+    /**
+     * Style for the stick border.
+     */
+    private Paint borderStyle;
 
     /**
      * Style of the sticks.
@@ -92,13 +110,13 @@ public class DroneSticks extends View {
         drone = null;
         width = 0;
         height = 0;
+        centerY = 0;
+        centerX = new int[2];
         stickRadius = 0;
-        sticksY = 0;
-        sticksX = new int[2];
-        stickFinger = new int[2];
-        stickInputX = new float[2];
-        stickInputY = new float[2];
-        stickPressed = new boolean[2];
+        stickFingerId = new int[2];
+        inputX = new float[2];
+        inputY = new float[2];
+        pressed = new boolean[2];
 
         stickStyle = new Paint(Paint.ANTI_ALIAS_FLAG);
         stickStyle.setColor(Color.BLACK);
@@ -106,23 +124,22 @@ public class DroneSticks extends View {
 
 
         stickBGStyle = new Paint(Paint.ANTI_ALIAS_FLAG);
-        stickStyle.setStyle(Paint.Style.FILL);
         stickBGStyle.setColor(0xff101010);
         stickBGStyle.setAlpha(50);
         stickBGStyle.setMaskFilter(new BlurMaskFilter(8, BlurMaskFilter.Blur.NORMAL));
 
-        stickBorderStyle = new Paint(Paint.ANTI_ALIAS_FLAG);
-        stickBorderStyle.setStyle(Paint.Style.STROKE);
-        stickBorderStyle.setStrokeWidth(10.0f);
-        stickBorderStyle.setColor(Color.BLACK);
+        borderStyle = new Paint(Paint.ANTI_ALIAS_FLAG);
+        borderStyle.setStyle(Paint.Style.STROKE);
+        borderStyle.setStrokeWidth(10.0f);
+        borderStyle.setColor(Color.BLACK);
     }
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 
-        Log.d(TAG, MeasureSpec.toString(widthMeasureSpec));
-        Log.d(TAG, MeasureSpec.toString(heightMeasureSpec));
+        //Log.d(TAG, MeasureSpec.toString(widthMeasureSpec));
+        //Log.d(TAG, MeasureSpec.toString(heightMeasureSpec));
 
         int prefWidth = MeasureSpec.getSize(widthMeasureSpec) - getPaddingLeft() - getPaddingRight();
         int prefHeight = 500 + getPaddingBottom() + getPaddingTop();
@@ -137,12 +154,12 @@ public class DroneSticks extends View {
             stickRadius = stickDiameter / 2;
         }
 
-        sticksY = stickRadius + getPaddingTop();
-        sticksX[0] = stickRadius + getPaddingLeft();
-        sticksX[1] = width - stickRadius - getPaddingRight();
+        centerY = stickRadius + getPaddingTop();
+        centerX[0] = stickRadius + getPaddingLeft();
+        centerX[1] = width - stickRadius - getPaddingRight();
 
-        Log.d(TAG, "Width: " + width);
-        Log.d(TAG, "Height: " + height);
+        //Log.d(TAG, "Width: " + width);
+        //Log.d(TAG, "Height: " + height);
         setMeasuredDimension(resolveSize(width, widthMeasureSpec),
                 resolveSize(height, heightMeasureSpec));
     }
@@ -162,7 +179,7 @@ public class DroneSticks extends View {
         }
 
         if (result < desiredSize){
-            Log.e(TAG, "View to small.");
+           //Log.e(TAG, "View to small.");
         }
         return result;
     }
@@ -172,13 +189,13 @@ public class DroneSticks extends View {
         super.onDraw(canvas);
 
         for(int i = 0; i < 2; i ++) {
-            canvas.drawCircle(sticksX[i], sticksY, stickRadius, stickBGStyle);
-            canvas.drawCircle(sticksX[i], sticksY, stickRadius, stickBorderStyle);
-            if (stickPressed[i]) {
-                canvas.drawCircle(stickInputX[i], stickInputY[i], stickRadius / 2, stickStyle);
+            canvas.drawCircle(centerX[i], centerY, stickRadius, stickBGStyle);
+            canvas.drawCircle(centerX[i], centerY, stickRadius, borderStyle);
+            if (pressed[i]) {
+                canvas.drawCircle(inputX[i], inputY[i], stickRadius / 2, stickStyle);
 
             }else {
-                canvas.drawCircle(sticksX[i], sticksY, stickRadius / 2, stickStyle);
+                canvas.drawCircle(centerX[i], centerY, stickRadius / 2, stickStyle);
             }
         }
     }
@@ -195,13 +212,13 @@ public class DroneSticks extends View {
                     float fingerY = event.getY(finger);
                     float fingerX = event.getX(finger);
                     for (int stick = 0; stick < 2; stick++) {
-                        double x = Math.abs(fingerX - sticksX[stick]);
-                        double y = Math.abs(fingerY - sticksY);
+                        double x = Math.abs(fingerX - centerX[stick]);
+                        double y = Math.abs(fingerY - centerY);
                         if (x + y <= stickRadius) {
-                            stickPressed[stick] = true;
-                            stickFinger[stick] = finger;
-                            stickInputX[stick] = fingerX;
-                            stickInputY[stick] = fingerY;
+                            pressed[stick] = true;
+                            stickFingerId[stick] = finger;
+                            inputX[stick] = fingerX;
+                            inputY[stick] = fingerY;
                         }
                     }
                 }
@@ -211,21 +228,21 @@ public class DroneSticks extends View {
                     float fingerY = event.getY(finger);
                     float fingerX = event.getX(finger);
                     for (int stick = 0; stick < 2; stick++) {
-                        double x = Math.abs(fingerX - sticksX[stick]);
-                        double y = Math.abs(fingerY - sticksY);
-                        if (stickPressed[stick] && stickFinger[stick] == finger) {
+                        double x = Math.abs(fingerX - centerX[stick]);
+                        double y = Math.abs(fingerY - centerY);
+                        if (pressed[stick] && stickFingerId[stick] == finger) {
                             if (x + y <= stickRadius) {
-                                stickFinger[stick] = finger;
-                                stickInputX[stick] = fingerX;
-                                stickInputY[stick] = fingerY;
-                                Log.d(TAG, "Pressed stick:" + stick);
+                                stickFingerId[stick] = finger;
+                                inputX[stick] = fingerX;
+                                inputY[stick] = fingerY;
+                                //Log.d(TAG, "Pressed stick:" + stick);
                                 break;
                             } else {
                                 double ratio = stickRadius / (x + y);
-                                stickFinger[stick] = finger;
-                                stickInputX[stick] = (float) (sticksX[stick] + (fingerX - sticksX[stick]) * ratio);
-                                stickInputY[stick] = (float) (sticksY + (fingerY - sticksY) * ratio);
-                                Log.d(TAG, "Pressed stick out:" + stick);
+                                stickFingerId[stick] = finger;
+                                inputX[stick] = (float) (centerX[stick] + (fingerX - centerX[stick]) * ratio);
+                                inputY[stick] = (float) (centerY + (fingerY - centerY) * ratio);
+                                //Log.d(TAG, "Pressed stick out:" + stick);
                                 break;
                             }
                         }
@@ -233,41 +250,74 @@ public class DroneSticks extends View {
                     }
                 }
                 break;
+            // Reset sticks.
             case MotionEvent.ACTION_UP:
-                Log.d(TAG,"Reset sticks.");
+                //Log.d(TAG,"Reset sticks.");
                 for(int i = 0; i < 2; i ++) {
-                    stickPressed[i] = false;
-                    stickInputY[i] = sticksY;
-                    stickInputX[i] = sticksX[i];
+                    pressed[i] = false;
+                    inputY[i] = centerY;
+                    inputX[i] = centerX[i];
                 }
                 break;
-
+            // One of two fingers released.
+            // Reset the released finger and update the other one.
             case MotionEvent.ACTION_POINTER_UP:
-                Log.d(TAG, "P_UP: " + event.getActionIndex());
+                //Log.d(TAG, "P_UP: " + event.getActionIndex());
                 for (int i = 0; i < 2; i++) {
-                    if (stickFinger[i] == event.getActionIndex()) {
-                        stickPressed[i] = false;
-                        stickInputY[i] = sticksY;
-                        stickInputX[i] = sticksX[i];
-                        Log.d(TAG, "Release stick: " + i);
+                    if (stickFingerId[i] == event.getActionIndex()) {
+                        // Reset stick.
+                        pressed[i] = false;
+                        inputY[i] = centerY;
+                        inputX[i] = centerX[i];
+                        //Log.d(TAG, "Release stick: " + i);
                     } else {
-                        float fingerY = event.getY(stickFinger[i]);
-                        float fingerX = event.getX(stickFinger[i]);
-                        double x = Math.abs(fingerX - sticksX[i]);
-                        double y = Math.abs(fingerY - sticksY);
+                        // Update stick.
+                        float fingerY = event.getY(stickFingerId[i]);
+                        float fingerX = event.getX(stickFingerId[i]);
+                        double x = Math.abs(fingerX - centerX[i]);
+                        double y = Math.abs(fingerY - centerY);
                         if (x + y <= stickRadius) {
-                            stickPressed[i] = true;
-                            stickInputX[i] = fingerX;
-                            stickInputY[i] = fingerY;
-                            Log.d(TAG, "Pressed stick:" + i);
+                            pressed[i] = true;
+                            inputX[i] = fingerX;
+                            inputY[i] = fingerY;
+                            //Log.d(TAG, "Pressed stick:" + i);
                         }
                     }
                 }
                 break;
             default:
         }
+
+        // Send data to drone.
+        float[] rcValue = new float[4];
+
+        for (int i = 0; i < 2; i++) {
+            rcValue[i] = calcRCX(inputX[i], centerX[i]);
+        }
+
+        for (int i = 0; i < 2; i++) {
+            rcValue[i + 2] = calcRCY(inputY[i], centerY);
+        }
+
+        if (drone != null) {
+            drone.sendRC(rcValue[2], rcValue[1], rcValue[3], rcValue[0]);
+        }
+        Log.d(TAG, "T: " + rcValue[2] + " Y: " + rcValue[0]
+                + " P: " + rcValue[3] + " R: " + rcValue[1]);
+
+        // Request view update.
         invalidate();
         return true;
+    }
+
+    private float calcRCX(float input, float center) {
+        float cleanInput =  input - (center - stickRadius);
+        return ((cleanInput / (stickRadius * 2)) * 1000) + 1000;
+    }
+
+    private float calcRCY(float input, float center) {
+        float cleanInput =  input - (center - stickRadius);
+        return ((1 - (cleanInput / (stickRadius * 2))) * 1000) + 1000;
     }
 
     public void setDrone(Drone drone) {
