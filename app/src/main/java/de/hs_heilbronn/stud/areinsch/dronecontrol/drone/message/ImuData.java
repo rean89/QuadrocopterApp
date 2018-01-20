@@ -88,7 +88,7 @@ public class ImuData extends DroneData {
 
     @Override
     public void displayData() {
-        ((TextView) MainActivity.instance.findViewById(R.id.tv_acceleration)).setText(accel[0] + " / " + accel[1] + " / " + accel[2]);
-        ((TextView) MainActivity.instance.findViewById(R.id.tv_lon)).setText(gyro[0] + " / " + gyro[1] + " / " + gyro[2]);
+        ((TextView) MainActivity.instance.findViewById(R.id.tv_acceleration)).setText(String.format("%s / %s / %s", accel[0], accel[1], accel[2]));
+        ((TextView) MainActivity.instance.findViewById(R.id.tv_lon)).setText(String.format("%s / %s / %s", gyro[0], gyro[1], gyro[2]));
     }
 }

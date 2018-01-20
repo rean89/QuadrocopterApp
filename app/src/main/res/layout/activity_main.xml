@@ -22,6 +22,7 @@
             android:layout_height="wrap_content"
             android:layout_column="0"
             android:layout_row="0"
+            android:minWidth="100dp"
             android:padding="5dp"
             android:text="LAT:" />
 
@@ -31,6 +32,7 @@
             android:layout_column="0"
             android:layout_row="1"
             android:padding="5dp"
+            android:minWidth="100dp"
             android:text="LON:" />
 
         <TextView
@@ -38,6 +40,7 @@
             android:layout_height="wrap_content"
             android:layout_column="0"
             android:layout_row="2"
+            android:minWidth="100dp"
             android:padding="5dp"
             android:text="ALTITUDE:" />
 
@@ -48,9 +51,9 @@
             android:layout_column="1"
             android:layout_row="0"
             android:gravity="end"
-            android:minWidth="50dp"
+            android:minWidth="100dp"
             android:padding="5dp"
-            tools:text="0" />
+            android:text="0" />
 
         <TextView
             android:id="@+id/tv_lon"
@@ -59,9 +62,9 @@
             android:layout_column="1"
             android:layout_row="1"
             android:gravity="end"
-            android:minWidth="50dp"
+            android:minWidth="100dp"
             android:padding="5dp"
-            tools:text="0" />
+            android:text="0" />
 
         <TextView
             android:id="@+id/tv_altitude"
@@ -70,25 +73,27 @@
             android:layout_column="1"
             android:layout_row="2"
             android:gravity="end"
-            android:minWidth="50dp"
+            android:minWidth="100dp"
             android:padding="5dp"
-            tools:text="0" />
+            android:text="0" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="ACCELERATION:"
+            android:layout_column="2"
             android:layout_row="0"
-            android:layout_column="2"
-            android:padding="5dp"/>
+            android:padding="5dp"
+            android:minWidth="100dp"
+            android:text="ACCELERATION:" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="GYRO:"
-            android:layout_row="1"
             android:layout_column="2"
-            android:padding="5dp"/>
+            android:layout_row="1"
+            android:padding="5dp"
+            android:minWidth="100dp"
+            android:text="GYRO:" />
 
         <TextView
             android:id="@+id/tv_acceleration"
@@ -97,9 +102,9 @@
             android:layout_column="3"
             android:layout_row="0"
             android:gravity="end"
-            android:minWidth="50dp"
+            android:minWidth="100dp"
             android:padding="5dp"
-            tools:text="0" />
+            android:text="0 / 0 / 0" />
 
         <TextView
             android:id="@+id/tv_gyro"
@@ -108,9 +113,9 @@
             android:layout_column="3"
             android:layout_row="1"
             android:gravity="end"
-            android:minWidth="50dp"
+            android:minWidth="100dp"
             android:padding="5dp"
-            tools:text="0" />
+            android:text="0 / 0 / 0" />
 
     </GridLayout>
 
