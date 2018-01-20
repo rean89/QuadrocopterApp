@@ -4,13 +4,13 @@ package de.hs_heilbronn.stud.areinsch.dronecontrol.drone;
 public class Requester {
 
     public static int[] requestCodes = {
+            Drone.IMU,
+            Drone.GPS/*,
             Drone.IDENT,
             Drone.STATUS,
-            Drone.IMU,
             Drone.SERVO,
             Drone.MOTOR,
             Drone.RC,
-            Drone.GPS,
             Drone.COMP_GPS,
             Drone.ATTITUDE,
             Drone.ALTITUDE,
@@ -20,7 +20,7 @@ public class Requester {
             Drone.MOTOR_PINS,
             Drone.WP,
             Drone.NAV_STATUS,
-            Drone.NAV_CONFIG
+            Drone.NAV_CONFIG*/
     };
 
     public Requester(final Drone drone) {

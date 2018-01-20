@@ -202,6 +202,15 @@ public class Drone implements ConnectionListener {
         Log.d(TAG, "Create");
         listeners = new ArrayList<>();
         connection = new TCPClient(this);
+        connection.connect();
+    }
+
+    public boolean isConnected() {
+        return connection.isConnected();
+    }
+
+    public void connect() {
+        connection.connect();
     }
 
     /**
@@ -238,6 +247,7 @@ public class Drone implements ConnectionListener {
      */
     @Override
     public void dataReceived(String data) {
+
         if(data == null || data.isEmpty()) {
             Log.d(TAG, "No DATA BITCHES!");
             return;
@@ -246,31 +256,36 @@ public class Drone implements ConnectionListener {
         DroneData dataPkg = null;
         String[] pkgParts = data.split(";");
 
-        Log.d(TAG, "Data: " + data + " Package parts:" + pkgParts.toString());
+        Log.d(TAG, "Data: " + data);
+        Log.d(TAG, "Msg id: " + pkgParts[0]);
 
-        switch(Integer.getInteger(pkgParts[0])) {
+        if(pkgParts.length < 2) {
+            return;
+        }
+
+        switch(Integer.parseInt(pkgParts[0])) {
             case IDENT:
                 IdentData ident = new IdentData();
-                ident.setVersion(Integer.getInteger(pkgParts[1]) / 100);
-                ident.setDroneType(Integer.getInteger(pkgParts[2]));
-                ident.setCapability(Integer.getInteger(pkgParts[4]));
+                ident.setVersion(Integer.parseInt(pkgParts[1]) / 100);
+                ident.setDroneType(Integer.parseInt(pkgParts[2]));
+                ident.setCapability(Integer.parseInt(pkgParts[4]));
 
                 dataPkg = ident;
                 Log.d(TAG, "Ident pkg received");
                 break;
             case STATUS:
                 StatusData status = new StatusData();
-                status.setCycleTime(Integer.getInteger(pkgParts[1]));
-                status.setI2cErrors(Integer.getInteger(pkgParts[2]));
+                status.setCycleTime(Integer.parseInt(pkgParts[1]));
+                status.setI2cErrors(Integer.parseInt(pkgParts[2]));
 
-                int sensorFlags = Integer.getInteger(pkgParts[3]);
+                int sensorFlags = Integer.parseInt(pkgParts[3]);
                 status.setBarometer(((sensorFlags & (1 << 1)) != 0));
                 status.setMagnetometer(((sensorFlags & (1 << 2)) != 0));
                 status.setGpsModule(((sensorFlags & (1 << 3)) != 0));
                 status.setSonar(((sensorFlags & (1 << 4)) != 0));
 
-                status.setBoxFlags(Integer.getInteger(pkgParts[4]));
-                status.setConfigFlags(Integer.getInteger(pkgParts[5]));
+                status.setBoxFlags(Integer.parseInt(pkgParts[4]));
+                status.setConfigFlags(Integer.parseInt(pkgParts[5]));
 
                 dataPkg = status;
                 Log.d(TAG, "Status pkg received.");
@@ -314,10 +329,10 @@ public class Drone implements ConnectionListener {
                 break;
             case RC:
                 RcChannelData channels = new RcChannelData();
-                channels.setRoll(Integer.getInteger(pkgParts[1]));
-                channels.setPitch(Integer.getInteger(pkgParts[2]));
-                channels.setYaw(Integer.getInteger(pkgParts[3]));
-                channels.setThrottle(Integer.getInteger(pkgParts[4]));
+                channels.setRoll(Integer.parseInt(pkgParts[1]));
+                channels.setPitch(Integer.parseInt(pkgParts[2]));
+                channels.setYaw(Integer.parseInt(pkgParts[3]));
+                channels.setThrottle(Integer.parseInt(pkgParts[4]));
 
                 dataPkg = channels;
                 Log.d(TAG, "RC pkg received.");
@@ -325,7 +340,7 @@ public class Drone implements ConnectionListener {
             case GPS:
                 GpsData gps = new GpsData();
                 gps.setFixGPS(pkgParts[1].equals("1"));
-                gps.setNumSat(Integer.getInteger(pkgParts[2]));
+                gps.setNumSat(Integer.parseInt(pkgParts[2]));
                 gps.setLatitude(Float.parseFloat(pkgParts[3]));
                 gps.setLongitude(Float.parseFloat(pkgParts[4]));
                 gps.setAltitude(Float.parseFloat(pkgParts[5]));
@@ -365,8 +380,8 @@ public class Drone implements ConnectionListener {
             case ANALOG:
                 AnalogData analog = new AnalogData();
                 analog.setVBat(Float.parseFloat(pkgParts[1]) * 10);
-                analog.setPowerMeterSum(Integer.getInteger(pkgParts[2]));
-                analog.setRSSI(Integer.getInteger(pkgParts[3]));
+                analog.setPowerMeterSum(Integer.parseInt(pkgParts[2]));
+                analog.setRSSI(Integer.parseInt(pkgParts[3]));
                 analog.setAmperage(Float.parseFloat(pkgParts[4]));
 
                 dataPkg = analog;
@@ -395,35 +410,35 @@ public class Drone implements ConnectionListener {
                 break;
             case WP:
                 WayPointData waypoint = new WayPointData();
-                waypoint.setNo(Integer.getInteger(pkgParts[1]));
-                waypoint.setAction(Integer.getInteger(pkgParts[2]));
+                waypoint.setNo(Integer.parseInt(pkgParts[1]));
+                waypoint.setAction(Integer.parseInt(pkgParts[2]));
                 waypoint.setLatitude(Float.parseFloat(pkgParts[3]));
                 waypoint.setLongitude(Float.parseFloat(pkgParts[4]));
                 waypoint.setAltitude(Float.parseFloat(pkgParts[5]));
-                waypoint.setParam1(Integer.getInteger(pkgParts[6]));
-                waypoint.setParam2(Integer.getInteger(pkgParts[7]));
-                waypoint.setParam3(Integer.getInteger(pkgParts[8]));
-                waypoint.setFlag(Integer.getInteger(pkgParts[9]));
+                waypoint.setParam1(Integer.parseInt(pkgParts[6]));
+                waypoint.setParam2(Integer.parseInt(pkgParts[7]));
+                waypoint.setParam3(Integer.parseInt(pkgParts[8]));
+                waypoint.setFlag(Integer.parseInt(pkgParts[9]));
 
                 dataPkg = waypoint;
                 Log.d(TAG, "Way point pkg received.");
                 break;
             case NAV_STATUS:
                 NavStatusData navStatus = new NavStatusData();
-                navStatus.setNavMode(Integer.getInteger(pkgParts[1]));
-                navStatus.setNavState(Integer.getInteger(pkgParts[2]));
-                navStatus.setNavAction(Integer.getInteger(pkgParts[3]));
-                navStatus.setNavWpNo(Integer.getInteger(pkgParts[4]));
-                navStatus.setNavError(Integer.getInteger(pkgParts[5]));
-                navStatus.setNavTarBearing(Integer.getInteger(pkgParts[6]));
+                navStatus.setNavMode(Integer.parseInt(pkgParts[1]));
+                navStatus.setNavState(Integer.parseInt(pkgParts[2]));
+                navStatus.setNavAction(Integer.parseInt(pkgParts[3]));
+                navStatus.setNavWpNo(Integer.parseInt(pkgParts[4]));
+                navStatus.setNavError(Integer.parseInt(pkgParts[5]));
+                navStatus.setNavTarBearing(Integer.parseInt(pkgParts[6]));
 
                 dataPkg = navStatus;
                 Log.d(TAG, "Navigation status pkg received.");
                 break;
             case NAV_CONFIG:
                 NavConfigData navConfig = new NavConfigData();
-                navConfig.setNavConfigFlags1(Integer.getInteger(pkgParts[1]));
-                navConfig.setNavConfigFlags2(Integer.getInteger(pkgParts[1]));
+                navConfig.setNavConfigFlags1(Integer.parseInt(pkgParts[1]));
+                navConfig.setNavConfigFlags2(Integer.parseInt(pkgParts[1]));
                 navConfig.setRadius(Float.parseFloat(pkgParts[3]));
                 navConfig.setWpDistance(Float.parseFloat(pkgParts[4]));
                 navConfig.setNavConfigMaxAltitude(Float.parseFloat(pkgParts[5]));

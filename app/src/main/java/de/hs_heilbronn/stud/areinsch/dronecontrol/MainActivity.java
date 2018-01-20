@@ -51,31 +51,12 @@ public class MainActivity extends AppCompatActivity implements DroneListener {
     protected void onResume() {
         super.onResume();
         new Requester(drone);
-
     }
 
     @Override
     public void droneUpdate(DroneData data) {
 
         data.displayData();
-
-//         new Thread() {
-//            @Override
-//            public void run() {
-//                try {
-//                    while (!isInterrupted()) {
-//                        Thread.sleep(100);
-//                        runOnUiThread(new Runnable() {
-//                            @Override
-//                            public void run() {
-//                                drone.update(Drone.IMU);
-//                            }
-//                        });
-//                    }
-//                } catch (InterruptedException e) {
-//                }
-//            }
-//        }.start();
     }
 
 }
