@@ -1,11 +1,14 @@
 package de.hs_heilbronn.stud.areinsch.dronecontrol.drone.message;
 
+import android.widget.TextView;
+
+import de.hs_heilbronn.stud.areinsch.dronecontrol.MainActivity;
+import de.hs_heilbronn.stud.areinsch.dronecontrol.R;
 import de.hs_heilbronn.stud.areinsch.dronecontrol.drone.Drone;
 
 /**
  * Created by AnAnd on 22.12.2017.
  */
-
 public class GpsData extends DroneData {
 
     /**
@@ -21,17 +24,17 @@ public class GpsData extends DroneData {
     /**
      * GPS latitude.
      */
-    private float latitude;
+    private float latitude; // lat
 
     /**
      * GPS longitude.
      */
-    private float longitude;
+    private float longitude; // lon
 
     /**
      * GPS altitude.
      */
-    private float altitude;
+    private float altitude; // att
 
     /**
      * GPS speed in m/s.
@@ -150,6 +153,8 @@ public class GpsData extends DroneData {
 
     @Override
     public void displayData() {
-
+        ((TextView) MainActivity.instance.findViewById(R.id.tv_lat)).setText(String.valueOf(latitude));
+        ((TextView) MainActivity.instance.findViewById(R.id.tv_lon)).setText(String.valueOf(longitude));
+        ((TextView) MainActivity.instance.findViewById(R.id.tv_altitude)).setText(String.valueOf(altitude));
     }
 }

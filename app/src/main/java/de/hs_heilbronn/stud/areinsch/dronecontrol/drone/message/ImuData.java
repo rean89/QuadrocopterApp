@@ -1,5 +1,9 @@
 package de.hs_heilbronn.stud.areinsch.dronecontrol.drone.message;
 
+import android.widget.TextView;
+
+import de.hs_heilbronn.stud.areinsch.dronecontrol.MainActivity;
+import de.hs_heilbronn.stud.areinsch.dronecontrol.R;
 import de.hs_heilbronn.stud.areinsch.dronecontrol.drone.Drone;
 
 /**
@@ -11,12 +15,12 @@ public class ImuData extends DroneData {
     /**
      * Accel values of the drone for 3 axes.
      */
-    private float[] accel;
+    private float[] accel; // this
 
     /**
      * Gyro values of the drone for 3 axes.
      */
-    private float[] gyro;
+    private float[] gyro; // this
 
     /**
      * Mag values of the dron for 3 axes;
@@ -84,6 +88,7 @@ public class ImuData extends DroneData {
 
     @Override
     public void displayData() {
-
+        ((TextView) MainActivity.instance.findViewById(R.id.tv_acceleration)).setText(accel[0] + " / " + accel[1] + " / " + accel[2]);
+        ((TextView) MainActivity.instance.findViewById(R.id.tv_lon)).setText(gyro[0] + " / " + gyro[1] + " / " + gyro[2]);
     }
 }
