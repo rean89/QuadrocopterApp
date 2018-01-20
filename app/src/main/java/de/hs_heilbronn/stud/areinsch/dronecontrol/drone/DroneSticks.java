@@ -53,6 +53,11 @@ public class DroneSticks extends View {
     private int[] centerX;
 
     /**
+     * Default position of the stick.
+     */
+    private int defaultY[];
+
+    /**
      * X axis input of the  sticks.
      */
     private float[] inputX;
@@ -112,6 +117,7 @@ public class DroneSticks extends View {
         height = 0;
         centerY = 0;
         centerX = new int[2];
+        defaultY = new int[2];
         stickRadius = 0;
         stickFingerId = new int[2];
         inputX = new float[2];
@@ -157,7 +163,12 @@ public class DroneSticks extends View {
         centerY = stickRadius + getPaddingTop();
         centerX[0] = stickRadius + getPaddingLeft();
         centerX[1] = width - stickRadius - getPaddingRight();
+        defaultY[0] = centerY + stickRadius;
+        defaultY[1] = centerY;
 
+        for(int i = 0; i < 2; i++) {
+            resetStick(i);
+        }
         //Log.d(TAG, "Width: " + width);
         //Log.d(TAG, "Height: " + height);
         setMeasuredDimension(resolveSize(width, widthMeasureSpec),
@@ -195,7 +206,7 @@ public class DroneSticks extends View {
                 canvas.drawCircle(inputX[i], inputY[i], stickRadius / 2, stickStyle);
 
             }else {
-                canvas.drawCircle(centerX[i], centerY, stickRadius / 2, stickStyle);
+                canvas.drawCircle(centerX[i], defaultY[i], stickRadius / 2, stickStyle);
             }
         }
     }
@@ -254,9 +265,7 @@ public class DroneSticks extends View {
             case MotionEvent.ACTION_UP:
                 //Log.d(TAG,"Reset sticks.");
                 for(int i = 0; i < 2; i ++) {
-                    pressed[i] = false;
-                    inputY[i] = centerY;
-                    inputX[i] = centerX[i];
+                    resetStick(i);
                 }
                 break;
             // One of two fingers released.
@@ -266,9 +275,7 @@ public class DroneSticks extends View {
                 for (int i = 0; i < 2; i++) {
                     if (stickFingerId[i] == event.getActionIndex()) {
                         // Reset stick.
-                        pressed[i] = false;
-                        inputY[i] = centerY;
-                        inputX[i] = centerX[i];
+                        resetStick(i);
                         //Log.d(TAG, "Release stick: " + i);
                     } else {
                         // Update stick.
@@ -318,6 +325,12 @@ public class DroneSticks extends View {
     private float calcRCY(float input, float center) {
         float cleanInput =  input - (center - stickRadius);
         return ((1 - (cleanInput / (stickRadius * 2))) * 1000) + 1000;
+    }
+
+    private void resetStick(int stickId) {
+            pressed[stickId] = false;
+            inputY[stickId] = defaultY[stickId];
+            inputX[stickId] = centerX[stickId];
     }
 
     public void setDrone(Drone drone) {
