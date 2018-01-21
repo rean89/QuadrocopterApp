@@ -250,21 +250,21 @@ public class DroneSticks extends View {
         }
 
         // Send data to drone.
-        float[] rcValue = new float[4];
+        float[] rcValues = new float[4];
 
         for (int i = 0; i < 2; i++) {
-            rcValue[i] = calcRCX(inputX[i], centerX[i]);
+            rcValues[i] = calcRCX(inputX[i], centerX[i]);
         }
 
         for (int i = 0; i < 2; i++) {
-            rcValue[i + 2] = calcRCY(inputY[i], centerY);
+            rcValues[i + 2] = calcRCY(inputY[i], centerY);
         }
 
         if (drone != null) {
-            drone.sendRC(rcValue[2], rcValue[1], rcValue[3], rcValue[0]);
+            drone.sendRC(rcValues[2], rcValues[1], rcValues[3], rcValues[0]);
         }
-        Log.d(TAG, "T: " + rcValue[2] + " Y: " + rcValue[0]
-                + " P: " + rcValue[3] + " R: " + rcValue[1]);
+        Log.d(TAG, "T: " + rcValues[2] + " Y: " + rcValues[0]
+                + " P: " + rcValues[3] + " R: " + rcValues[1]);
 
         // Request view update.
         invalidate();

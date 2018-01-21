@@ -43,7 +43,7 @@ public class TCPClient {
     /**
      * IP address of the server.
      */
-    private static final String SERVER_IP = "192.168.0.105";
+    private static final String SERVER_IP = "192.168.10.1";
 
     /**
      * Port of the server.
