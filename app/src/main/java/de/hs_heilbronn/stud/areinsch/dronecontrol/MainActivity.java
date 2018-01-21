@@ -1,7 +1,11 @@
 package de.hs_heilbronn.stud.areinsch.dronecontrol;
 
+import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.VideoView;
 
 import de.hs_heilbronn.stud.areinsch.dronecontrol.drone.Drone;
 import de.hs_heilbronn.stud.areinsch.dronecontrol.drone.DroneListener;
@@ -17,6 +21,9 @@ public class MainActivity extends AppCompatActivity implements DroneListener {
 
     private DroneSticks sticks;
     private Drone drone;
+    MediaPlayer mediaplayer;
+
+    VideoView videoView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,12 +34,32 @@ public class MainActivity extends AppCompatActivity implements DroneListener {
         sticks = findViewById(R.id.sticks);
         drone = new Drone();
         sticks.setDrone(drone);
+
+        videoView = (VideoView) findViewById(R.id.vv_main_video_view);
+        Uri uri = Uri.parse(String.format("android.resource://%s/%s", getPackageName(), R.raw.sample_video));
+        videoView.setVideoURI(uri);
+
+        videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+            @Override
+            public void onPrepared(MediaPlayer mp) {
+                mp.setLooping(true);
+            }
+        });
+
+        videoView.start();
+
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         new Requester(drone);
+        videoView.start();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
     }
 
     @Override

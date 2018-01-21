@@ -8,7 +8,17 @@
     tools:context="de.hs_heilbronn.stud.areinsch.dronecontrol.MainActivity">
 
 
+    <VideoView
+        android:id="@+id/vv_main_video_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
     <GridLayout
+        android:background="#66ffffff"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:columnCount="4"
@@ -20,6 +30,9 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:shadowColor="#ffffff"
+            android:shadowDx="1.5"
+            android:shadowDy="1.5"
             android:layout_column="0"
             android:layout_row="0"
             android:minWidth="100dp"
@@ -120,6 +133,7 @@
     </GridLayout>
 
     <FrameLayout
+        android:background="#66ffffff"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -132,4 +146,6 @@
             android:layout_height="wrap_content"
             android:padding="10dp" />
     </FrameLayout>
+
+
 </android.support.constraint.ConstraintLayout>
