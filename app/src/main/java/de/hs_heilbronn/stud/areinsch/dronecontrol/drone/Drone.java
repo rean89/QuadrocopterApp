@@ -461,7 +461,7 @@ public class Drone implements ConnectionListener {
         }
     }
 
-    public void sendRC(float throttle, float roll, float pitch, float yaw) {
+    public void sendRC(int throttle, int roll, int pitch, int yaw) {
         String dataPkg = SET_RC + ";" + roll + ";" + pitch + ";" + yaw + ";" + throttle;
         connection.sendData(dataPkg);
     }

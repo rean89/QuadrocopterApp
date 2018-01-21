@@ -250,14 +250,14 @@ public class DroneSticks extends View {
         }
 
         // Send data to drone.
-        float[] rcValues = new float[4];
+        int[] rcValues = new int[4];
 
         for (int i = 0; i < 2; i++) {
-            rcValues[i] = calcRCX(inputX[i], centerX[i]);
+            rcValues[i] = Math.round(calcRCX(inputX[i], centerX[i]));
         }
 
         for (int i = 0; i < 2; i++) {
-            rcValues[i + 2] = calcRCY(inputY[i], centerY);
+            rcValues[i + 2] = Math.round(calcRCY(inputY[i], centerY));
         }
 
         if (drone != null) {
