@@ -91,7 +91,9 @@ public class ImuData extends DroneData {
 
     @Override
     public void displayData() {
+        Log.d("IMU DATA", String.format("ACCEL: %s GYRO: %s MAG: %s", Arrays.toString(accel), Arrays.toString(gyro), Arrays.toString(mag)));
         ((TextView) MainActivity.instance.findViewById(R.id.tv_acceleration)).setText(String.format("%s / %s / %s", accel[0], accel[1], accel[2]));
         ((TextView) MainActivity.instance.findViewById(R.id.tv_gyro)).setText(String.format("%s / %s / %s", gyro[0], gyro[1], gyro[2]));
+        ((TextView) MainActivity.instance.findViewById(R.id.tv_magnitude)).setText(String.format("%s / %s / %s", mag[0], mag[1], mag[2]));
     }
 }

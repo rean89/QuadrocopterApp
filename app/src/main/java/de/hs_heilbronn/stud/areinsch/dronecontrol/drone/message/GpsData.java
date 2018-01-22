@@ -156,8 +156,49 @@ public class GpsData extends DroneData {
     public void displayData() {
 
         Log.d("GPS Data", "Lat: " + latitude + " Lon: " + longitude + " Altitude " + altitude);
-        ((TextView) MainActivity.instance.findViewById(R.id.tv_lat)).setText(String.valueOf(latitude));
-        ((TextView) MainActivity.instance.findViewById(R.id.tv_lon)).setText(String.valueOf(longitude));
-        ((TextView) MainActivity.instance.findViewById(R.id.tv_altitude)).setText(String.valueOf(altitude));
+
+        String[] latlonConverted = convertLatAndLonToDMS(latitude, longitude);
+        ((TextView) MainActivity.instance.findViewById(R.id.tv_lat)).setText(String.valueOf(latlonConverted[0]));
+        ((TextView) MainActivity.instance.findViewById(R.id.tv_lon)).setText(String.valueOf(latlonConverted[1]));
+        ((TextView) MainActivity.instance.findViewById(R.id.tv_altitude)).setText(String.format("%s m", altitude));
+    }
+
+
+    private String[] convertLatAndLonToDMS(float lat, float lon) {
+
+        String latResult;
+        String lonResult;
+
+        latResult = (lat >= 0) ? "N " : "S ";
+
+        latResult += convertToDms(lat);
+
+        lonResult = (lon >= 0) ? "E " : "W ";
+
+        lonResult += convertToDms(lon);
+
+        return new String[] {latResult, lonResult};
+
+    }
+
+    private String convertToDms(float convert) {
+        String result = "";
+
+        // convert = Math.abs(convert);
+
+        int deg = Math.round(convert);
+
+        result += deg + "° ";
+
+        int min = Math.round((convert - deg) * 60);
+
+        result += min + "' ";
+
+        float sec = (float) Math.round(((convert - deg - min / 60) * 3600  * 1000)) / 1000;
+
+        result += sec + "\" ";
+
+        return result;
+
     }
 }

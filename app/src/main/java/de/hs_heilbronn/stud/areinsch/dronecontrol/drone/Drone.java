@@ -188,6 +188,11 @@ public class Drone implements ConnectionListener {
      */
     private static final String TAG = "MY_DRONE";
 
+
+    public static final int LAT_LON_CONVERT_NUMBER = 10000000;
+
+    public static final float ALTITUDE_CONVERTER = (0.3048f / 100);
+
     /**
      * Connection to the server.
      */
@@ -294,10 +299,11 @@ public class Drone implements ConnectionListener {
             case IMU:
                 ImuData imu = new ImuData();
 
+                Log.d("DATA PACKAGE IMU", Arrays.toString(pkgParts));
 
                 float[] accel = new float[3];
                 for(int i = 0; i < 3; i++) {
-                   accel[i] = Float.parseFloat(pkgParts[i + 1]) / 512;
+                   accel[i] = Float.parseFloat(pkgParts[i + 1]);
                 }
                 imu.setAccel(accel);
 
@@ -309,7 +315,7 @@ public class Drone implements ConnectionListener {
 
                 float[] mag = new float[3];
                 for(int i = 0; i < 3; i++) {
-                    accel[i] = Float.parseFloat(pkgParts[i + 7]);
+                    mag[i] = Float.parseFloat(pkgParts[i + 7]);
                 }
                 imu.setMag(mag);
 
@@ -344,11 +350,11 @@ public class Drone implements ConnectionListener {
                 break;
             case GPS:
                 GpsData gps = new GpsData();
-
+                Log.d("GPS DATA", Arrays.toString(pkgParts));
                 gps.setFixGPS(pkgParts[1].equals("1"));
                 gps.setNumSat(Float.parseFloat(pkgParts[2]));
-                gps.setLatitude(Float.parseFloat(pkgParts[3]));
-                gps.setLongitude(Float.parseFloat(pkgParts[4]));
+                gps.setLatitude(Float.parseFloat(pkgParts[3]) / LAT_LON_CONVERT_NUMBER);
+                gps.setLongitude(Float.parseFloat(pkgParts[4]) / LAT_LON_CONVERT_NUMBER);
                 gps.setAltitude(Float.parseFloat(pkgParts[5]));
                 gps.setSpeed(Float.parseFloat(pkgParts[6]));
 
