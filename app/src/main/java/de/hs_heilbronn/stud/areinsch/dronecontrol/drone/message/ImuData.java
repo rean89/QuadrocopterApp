@@ -1,6 +1,9 @@
 package de.hs_heilbronn.stud.areinsch.dronecontrol.drone.message;
 
+import android.util.Log;
 import android.widget.TextView;
+
+import java.util.Arrays;
 
 import de.hs_heilbronn.stud.areinsch.dronecontrol.MainActivity;
 import de.hs_heilbronn.stud.areinsch.dronecontrol.R;
@@ -89,6 +92,6 @@ public class ImuData extends DroneData {
     @Override
     public void displayData() {
         ((TextView) MainActivity.instance.findViewById(R.id.tv_acceleration)).setText(String.format("%s / %s / %s", accel[0], accel[1], accel[2]));
-        ((TextView) MainActivity.instance.findViewById(R.id.tv_lon)).setText(String.format("%s / %s / %s", gyro[0], gyro[1], gyro[2]));
+        ((TextView) MainActivity.instance.findViewById(R.id.tv_gyro)).setText(String.format("%s / %s / %s", gyro[0], gyro[1], gyro[2]));
     }
 }

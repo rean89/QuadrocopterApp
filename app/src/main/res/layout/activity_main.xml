@@ -115,7 +115,7 @@
             android:layout_column="3"
             android:layout_row="0"
             android:gravity="end"
-            android:minWidth="100dp"
+            android:minWidth="150dp"
             android:padding="5dp"
             android:text="0 / 0 / 0" />
 
@@ -126,7 +126,7 @@
             android:layout_column="3"
             android:layout_row="1"
             android:gravity="end"
-            android:minWidth="100dp"
+            android:minWidth="150dp"
             android:padding="5dp"
             android:text="0 / 0 / 0" />
 

@@ -1,5 +1,6 @@
 package de.hs_heilbronn.stud.areinsch.dronecontrol.drone.message;
 
+import android.util.Log;
 import android.widget.TextView;
 
 import de.hs_heilbronn.stud.areinsch.dronecontrol.MainActivity;
@@ -19,7 +20,7 @@ public class GpsData extends DroneData {
     /**
      * Number of satellites.
      */
-    private int numSat;
+    private float numSat;
 
     /**
      * GPS latitude.
@@ -75,7 +76,7 @@ public class GpsData extends DroneData {
      * Set the number of satellites.
      * @param numSat Number of satellites.
      */
-    public void setNumSat(int numSat) {
+    public void setNumSat(float numSat) {
         this.numSat = numSat;
     }
 
@@ -83,7 +84,7 @@ public class GpsData extends DroneData {
      * Get the number of satellites.
      * @return Number of satellites.
      */
-    public int getNumSat() {
+    public float getNumSat() {
         return numSat;
     }
 
@@ -153,6 +154,8 @@ public class GpsData extends DroneData {
 
     @Override
     public void displayData() {
+
+        Log.d("GPS Data", "Lat: " + latitude + " Lon: " + longitude + " Altitude " + altitude);
         ((TextView) MainActivity.instance.findViewById(R.id.tv_lat)).setText(String.valueOf(latitude));
         ((TextView) MainActivity.instance.findViewById(R.id.tv_lon)).setText(String.valueOf(longitude));
         ((TextView) MainActivity.instance.findViewById(R.id.tv_altitude)).setText(String.valueOf(altitude));

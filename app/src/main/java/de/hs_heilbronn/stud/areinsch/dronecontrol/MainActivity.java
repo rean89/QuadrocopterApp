@@ -55,6 +55,7 @@ public class MainActivity extends AppCompatActivity implements DroneListener {
         super.onResume();
         new Requester(drone);
         videoView.start();
+        drone.addListener(this);
     }
 
     @Override
@@ -64,7 +65,6 @@ public class MainActivity extends AppCompatActivity implements DroneListener {
 
     @Override
     public void droneUpdate(DroneData data) {
-
         data.displayData();
     }
 

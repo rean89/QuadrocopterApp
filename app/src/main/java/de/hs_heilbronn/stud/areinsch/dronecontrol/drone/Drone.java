@@ -3,6 +3,7 @@ package de.hs_heilbronn.stud.areinsch.dronecontrol.drone;
 import android.util.Log;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import de.hs_heilbronn.stud.areinsch.dronecontrol.drone.connection.ConnectionListener;
@@ -292,21 +293,25 @@ public class Drone implements ConnectionListener {
                 break;
             case IMU:
                 ImuData imu = new ImuData();
-                float[] tempIMU = new float[3];
 
-                for(int i = 0; i < 3; i++) {
-                   tempIMU[i] = Float.parseFloat(pkgParts[i + 1]) / 512;
-                }
-                imu.setAccel(tempIMU);
-                for(int i = 0; i < 3; i++) {
-                    tempIMU[i] = Float.parseFloat(pkgParts[i + 4]);
-                }
-                imu.setGyro(tempIMU);
 
+                float[] accel = new float[3];
                 for(int i = 0; i < 3; i++) {
-                    tempIMU[i] = Float.parseFloat(pkgParts[i + 7]);
+                   accel[i] = Float.parseFloat(pkgParts[i + 1]) / 512;
                 }
-                imu.setMag(tempIMU);
+                imu.setAccel(accel);
+
+                float[] gyro = new float[3];
+                for(int i = 0; i < 3; i++) {
+                    gyro[i] = Float.parseFloat(pkgParts[i + 4]);
+                }
+                imu.setGyro(gyro);
+
+                float[] mag = new float[3];
+                for(int i = 0; i < 3; i++) {
+                    accel[i] = Float.parseFloat(pkgParts[i + 7]);
+                }
+                imu.setMag(mag);
 
                 dataPkg = imu;
                 Log.d(TAG, "IMU pkg received.");
@@ -339,8 +344,9 @@ public class Drone implements ConnectionListener {
                 break;
             case GPS:
                 GpsData gps = new GpsData();
+
                 gps.setFixGPS(pkgParts[1].equals("1"));
-                gps.setNumSat(Integer.parseInt(pkgParts[2]));
+                gps.setNumSat(Float.parseFloat(pkgParts[2]));
                 gps.setLatitude(Float.parseFloat(pkgParts[3]));
                 gps.setLongitude(Float.parseFloat(pkgParts[4]));
                 gps.setAltitude(Float.parseFloat(pkgParts[5]));

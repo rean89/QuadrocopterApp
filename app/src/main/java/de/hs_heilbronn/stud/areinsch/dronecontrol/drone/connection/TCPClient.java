@@ -98,7 +98,7 @@ public class TCPClient {
                         InetAddress serverAddr = InetAddress.getByName(SERVER_IP);
                         InetSocketAddress socketAddr = new InetSocketAddress(serverAddr, SERVER_PORT);
                         socket.connect(socketAddr, 500);
-                        socket.setSoTimeout(100);
+                        socket.setSoTimeout(1000);
 
                         writer = new PrintWriter(new BufferedWriter(new OutputStreamWriter(
                                 socket.getOutputStream())));
